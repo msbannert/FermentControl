@@ -9,13 +9,15 @@ typedef struct _Config {
   float TargetTemp = 20.0;
 
 
-  int ResetHours=24*7;
+  int ResetHours=24*14;
   bool CoolActivated=true;
   bool HeatActivated=true;
-  double PidP=4.0;
-  double PidI=0.5;
+  double PidP=6.0;
+  double PidI=0.25;
   double PidD=0.5;
+  double TempCorrect=0.3;  // align inner and outer sensor to show sth "in the middle"
   unsigned long CoolToHeatDelaySec=3600;
+
 } Configuration;
 
 
@@ -41,6 +43,7 @@ void deserializeConfigData(JsonObject &json, Configuration &cfg) {
   if (json.containsKey("PidP"))  cfg.PidP = String((const char*) json["PidP"]).toFloat();
   if (json.containsKey("PidD"))  cfg.PidD = String((const char*) json["PidD"]).toFloat();
   if (json.containsKey("PidI"))  cfg.PidI = String((const char*) json["PidI"]).toFloat();  
+  if (json.containsKey("TempCorrect"))  cfg.TempCorrect = String((const char*) json["TempCorrect"]).toFloat();  
   if (json.containsKey("CoolToHeatDelaySec"))  cfg.CoolToHeatDelaySec = String((const char*) json["CoolToHeatDelaySec"]).toInt();
 
 }
@@ -58,6 +61,7 @@ void serializeConfigData(JsonObject &json, Configuration &cfg) {
   json["PidI"] = String(cfg.PidI);
   json["PidD"] = String(cfg.PidD);
   json["CoolToHeatDelaySec"] = String(cfg.CoolToHeatDelaySec);
+  json["TempCorrect"] = String(cfg.TempCorrect);
 
 }
 #endif

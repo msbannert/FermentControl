@@ -328,8 +328,8 @@ void handleTemp()
     DS18B20Outer.requestTemperatures();
     DSreqTime = millis();
     if (++accCtr==4) {
-      InnerTemperature=accIT/accCtr;
-      OuterTemperature=accOT/accCtr;
+      InnerTemperature=(accIT/accCtr)+myConfiguration.TempCorrect;
+      OuterTemperature=(accOT/accCtr)-myConfiguration.TempCorrect;
       accCtr=0;
       accIT=0.0;
       accOT=0.0;
